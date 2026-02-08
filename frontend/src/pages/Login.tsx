@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { login } from "../auth/auth";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Login() {
+    const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = (location.state as any)?.from ?? "/dashboard";

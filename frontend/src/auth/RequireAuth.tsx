@@ -1,10 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { isLoggedIn } from "./auth";
+import { useAuth } from "./AuthContext";
 
 export default function RequireAuth({ children }: { children: JSX.Element }) {
-    const location = useLocation();
+    const { loggedIn } = useAuth();
 
-    if (!isLoggedIn()) {
+    if (!loggedIn) {
         return <Navigate to="/login" replace state={{ from: location.pathname }} />;
     }
 

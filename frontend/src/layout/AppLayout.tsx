@@ -1,10 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { isLoggedIn, logout } from "../auth/auth";
+import { useAuth } from "../auth/AuthContext";
 
 export default function AppLayout() {
     const navigate = useNavigate();
-    const loggedIn = isLoggedIn();
+    const { loggedIn, logout } = useAuth();
 
     return (
         <div style={{ padding: 24 }}>
@@ -13,17 +13,14 @@ export default function AppLayout() {
                 <nav style={{ display: "flex", gap: 12 }}>
                     <Link to="/">Home</Link>
                     <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/ci">CI</Link>
                     <Link to="/login">Login</Link>
-                    {loggedIn ? (
-                        <button
-                            onClick={() => {
+                    {loggedIn ? (<button onClick={() => {
                                 logout();
                                 navigate("/", { replace: true });
-                            }}
-                        >
+                            }}>
                             Logout
-                        </button>
-                    ) : null}
+                        </button>) : null}
                 </nav>
             </header>
 
