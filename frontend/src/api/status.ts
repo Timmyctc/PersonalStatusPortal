@@ -1,20 +1,12 @@
 export type SystemStatus = {
-    jenkins: "UP" | "DOWN";
-    nas: "UP" | "DOWN";
-    lastBuild: "SUCCESS" | "FAILURE" | "UNKNOWN";
+    jenkinsStatus: "UP" | "DOWN";
+    nasStatus: "UP" | "DOWN";
+    lastBuildStatus: "SUCCESS" | "FAILURE" | "UNKNOWN";
 };
 
 export async function fetchStatus(): Promise<SystemStatus> {
-    // simulate network delay
-    await new Promise((r) => setTimeout(r, 600));
-
-    // flip to true to simulate an error
-    const shouldFail = false;
-    if (shouldFail) throw new Error("Status service unreachable");
-
-    return {
-        jenkins: "UP",
-        nas: "UP",
-        lastBuild: "SUCCESS",
-    };
+    const statusResponse = await fetch("http://localhost:8080/api/status");
+    if (!statusResponse.ok) throw new Error(`HTTP ${statusResponse.status}`);
+    return statusResponse.json();
 }
+

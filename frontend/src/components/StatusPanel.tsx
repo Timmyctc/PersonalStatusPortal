@@ -16,9 +16,9 @@ export default function StatusPanel() {
         <div>
             <h3>System Status</h3>
             <ul>
-                <li>Jenkins: {data.jenkins}</li>
-                <li>NAS: {data.nas}</li>
-                <li>Last build: {data.lastBuild}</li>
+                <li>Jenkins: {data.jenkinsStatus}</li>
+                <li>NAS: {data.nasStatus}</li>
+                <li>Last build: {data.lastBuildStatus}</li>
             </ul>
         </div>
     );
