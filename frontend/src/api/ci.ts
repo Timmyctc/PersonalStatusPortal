@@ -4,9 +4,10 @@ export type BuildResult = {
 };
 
 export async function triggerBuild(): Promise<BuildResult> {
-    await new Promise((r) => setTimeout(r, 600));
-    return {
-        buildId: crypto.randomUUID(),
-        status: "QUEUED",
-    };
+   const response = await fetch("http://localhost:8080/api/ci", {
+       method: "POST",
+   });
+
+   if(!response.ok) throw new Error(`HTTP ${response.status}`);
+   return response.json();
 }
