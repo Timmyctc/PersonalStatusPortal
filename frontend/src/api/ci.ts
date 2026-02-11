@@ -1,13 +1,31 @@
-export type BuildResult = {
-    buildId: string;
-    status: "QUEUED" | "RUNNING" | "COMPLETED" | "ABORTED"
+export type JenkinsJob = {
+    name: string;
+    url?: string;
+    color?: string;
 };
 
-export async function triggerBuild(): Promise<BuildResult> {
-   const response = await fetch("http://localhost:8080/api/ci", {
-       method: "POST",
-   });
+// Jenkins returns { jobs: [...] }
+export type JenkinsJobsResponse = {
+    jobs: JenkinsJob[];
+};
 
-   if(!response.ok) throw new Error(`HTTP ${response.status}`);
-   return response.json();
+export type BuildResult = {
+    jobId: string;
+    status: "QUEUED" | "RUNNING" | "STARTED" | "UNKNOWN";
+};
+
+const BACKEND = "http://localhost:8080";
+
+export async function fetchJobs(): Promise<JenkinsJobsResponse> {
+    const res = await fetch(`${BACKEND}/api/ci/jobs`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+export async function triggerBuild(jobId: string): Promise<BuildResult> {
+    const res = await fetch(`${BACKEND}/api/ci/jobs/${encodeURIComponent(jobId)}`, {
+        method: "POST",
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
 }
